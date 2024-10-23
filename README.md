@@ -1,50 +1,45 @@
-# React + TypeScript + Vite
+# To-Do List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este es un proyecto de **To-Do List** desarrollado con **React**, **TypeScript**, **TailwindCSS**, y **Shadcn UI**. La aplicación permite agregar, completar y eliminar tareas, además de guardar las tareas en **LocalStorage** para mantenerlas persistentes entre recargas.
 
-Currently, two official plugins are available:
+## Tecnologías utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React**: Librería para construir interfaces de usuario.
+- **TypeScript**: Lenguaje que añade tipado estático a JavaScript.
+- **TailwindCSS**: Framework de CSS para el diseño de la UI de forma eficiente.
+- **Shadcn UI**: Componentes UI altamente accesibles y personalizables.
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Añadir tareas con un título.
+- Marcar tareas como completadas.
+- Filtrar tareas entre completadas, activas o todas.
+- Guardado automático en **LocalStorage** para persistencia de datos entre recargas.
+- Eliminación de tareas completadas.
+  
+## Deployment
 
-- Configure the top-level `parserOptions` property like this:
+La aplicación está desplegada y puedes verla en:  
+👉 [https://todo.aliaga.lol](https://todo.aliaga.lol)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Instalación y configuración
+
+### 1. Clonar el repositorio
+
+```bash
+git clone https://github.com/aliagaaaaaa/todo.git
+cd tu-repositorio
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Instalar dependencias
+Asegúrate de tener Node.js instalado. Luego, instala las dependencias del proyecto con:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
 ```
+### 3. Ejecutar el proyecto localmente
+
+```bash
+npm run dev
+```
+
