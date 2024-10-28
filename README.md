@@ -16,6 +16,8 @@ Este es un proyecto de **To-Do List** desarrollado con **React**, **TypeScript**
 - Filtrar tareas entre completadas, activas o todas.
 - Guardado automático en **LocalStorage** para persistencia de datos entre recargas.
 - Eliminación de tareas completadas.
+- Gestión de proyectos.
+- Contador de tareas activas por proyecto.
   
 ## Deployment
 
