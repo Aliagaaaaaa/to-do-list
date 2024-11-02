@@ -17,6 +17,41 @@ interface Project {
   name: string
 }
 
+const translations = {
+  en: {
+    title: "Advanced To-Do List",
+    newProjectPlaceholder: "New project name",
+    addProject: "Add Project",
+    selectProject: "Select a project",
+    taskTitlePlaceholder: "Task title",
+    addTask: "Add Task",
+    all: "All",
+    active: "Active",
+    completed: "Completed",
+    createdAt: "Created at:",
+    markAsDone: "Mark as Done",
+    tasksLeft: "tasks left in this project",
+    deleteCompleted: "Delete Completed",
+    toggleLanguage: "Cambiar a Español",
+  },
+  es: {
+    title: "Lista de Tareas Avanzada",
+    newProjectPlaceholder: "Nombre del nuevo proyecto",
+    addProject: "Agregar Proyecto",
+    selectProject: "Seleccionar un proyecto",
+    taskTitlePlaceholder: "Título de la tarea",
+    addTask: "Agregar Tarea",
+    all: "Todas",
+    active: "Activas",
+    completed: "Completadas",
+    createdAt: "Creada el:",
+    markAsDone: "Marcar como Hecha",
+    tasksLeft: "tareas pendientes en este proyecto",
+    deleteCompleted: "Eliminar Completadas",
+    toggleLanguage: "Switch to English",
+  },
+}
+
 export default function Component() {
   const [title, setTitle] = useState<string>("")
   const [tasks, setTasks] = useState<Task[]>([])
@@ -24,21 +59,25 @@ export default function Component() {
   const [projects, setProjects] = useState<Project[]>([{ id: 1, name: "Default Project" }])
   const [currentProject, setCurrentProject] = useState<number>(1)
   const [newProjectName, setNewProjectName] = useState<string>("")
+  const [language, setLanguage] = useState<"en" | "es">("en")
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks")
     const savedProjects = localStorage.getItem("projects")
     const lastUsedProject = localStorage.getItem("lastUsedProject")
+    const savedLanguage = localStorage.getItem("language")
     if (savedTasks) setTasks(JSON.parse(savedTasks))
     if (savedProjects) setProjects(JSON.parse(savedProjects))
     if (lastUsedProject) setCurrentProject(Number(lastUsedProject))
+    if (savedLanguage) setLanguage(savedLanguage as "en" | "es")
   }, [])
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks))
     localStorage.setItem("projects", JSON.stringify(projects))
     localStorage.setItem("lastUsedProject", currentProject.toString())
-  }, [tasks, projects, currentProject])
+    localStorage.setItem("language", language)
+  }, [tasks, projects, currentProject, language])
 
   const handleAddTask = () => {
     if (title.trim() !== "") {
@@ -86,22 +125,31 @@ export default function Component() {
 
   const activeTasksCount = tasks.filter((task) => !task.completed && task.projectId === currentProject).length
 
+  const t = translations[language]
+
   return (
     <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Advanced To-Do List</h1>
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold text-center mb-2">{t.title}</h1>
+        <div className="flex justify-center">
+          <Button onClick={() => setLanguage(language === "en" ? "es" : "en")}>
+            {t.toggleLanguage}
+          </Button>
+        </div>
+      </div>
 
       <div className="flex flex-col gap-2 mb-4">
         <Input 
           value={newProjectName} 
           onChange={(e) => setNewProjectName(e.target.value)} 
-          placeholder="New project name" 
+          placeholder={t.newProjectPlaceholder} 
         />
-        <Button onClick={handleAddProject}>Add Project</Button>
+        <Button onClick={handleAddProject}>{t.addProject}</Button>
       </div>
 
       <Select value={currentProject.toString()} onValueChange={(value) => setCurrentProject(Number(value))}>
         <SelectTrigger className="w-full mb-4">
-          <SelectValue placeholder="Select a project" />
+          <SelectValue placeholder={t.selectProject} />
         </SelectTrigger>
         <SelectContent>
           {projects.map((project) => (
@@ -116,15 +164,15 @@ export default function Component() {
         <Input 
           value={title} 
           onChange={(e) => setTitle(e.target.value)} 
-          placeholder="Task title" 
+          placeholder={t.taskTitlePlaceholder} 
         />
-        <Button onClick={handleAddTask}>Add Task</Button>
+        <Button onClick={handleAddTask}>{t.addTask}</Button>
       </div>
 
       <div className="flex gap-2 mb-4">
-        <Button onClick={() => setFilter("all")}>All</Button>
-        <Button onClick={() => setFilter("active")}>Active</Button>
-        <Button onClick={() => setFilter("completed")}>Completed</Button>
+        <Button onClick={() => setFilter("all")}>{t.all}</Button>
+        <Button onClick={() => setFilter("active")}>{t.active}</Button>
+        <Button onClick={() => setFilter("completed")}>{t.completed}</Button>
       </div>
 
       <ul className="space-y-4">
@@ -134,25 +182,25 @@ export default function Component() {
               <div>
                 <h2 className="text-lg font-semibold">{task.title}</h2>
                 <p className="text-sm text-muted-foreground">
-                  Created at: {task.createdAt}
+                  {t.createdAt} {task.createdAt}
                 </p>
               </div>
             </div>
 
             <div className="flex justify-end space-x-2 mt-2">
               <Button onClick={() => handleToggleComplete(task.id)} variant={task.completed ? "secondary" : "default"}>
-                {task.completed ? "Completed" : "Mark as Done"}
+                {task.completed ? t.completed : t.markAsDone}
               </Button>
             </div>
           </Card>
         ))}
       </ul>
 
-      <p className="mt-4">{activeTasksCount} tasks left in this project</p>
+      <p className="mt-4">{activeTasksCount} {t.tasksLeft}</p>
 
       {tasks.some((task) => task.completed && task.projectId === currentProject) && (
         <Button onClick={handleDeleteCompleted} className="mt-4">
-          Delete Completed
+          {t.deleteCompleted}
         </Button>
       )}
     </div>
