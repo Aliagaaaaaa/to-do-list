@@ -143,7 +143,6 @@ export default function Component() {
       setNewProjectId(newProject.id)
       setNewProjectName("")
     
-      // Reset the highlight effect after 2 seconds
       setTimeout(() => setNewProjectId(null), 2000)
     }
   }
