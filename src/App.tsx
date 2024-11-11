@@ -23,7 +23,7 @@ type SortMethod = "alphabetical" | "reverseAlphabetical" | "creationDate"
 
 const translations = {
   en: {
-    title: "Advanced To-Do List",
+    title: "To-Do List",
     newProjectPlaceholder: "New project name",
     addProject: "Add Project",
     deleteProject: "Delete Project",
@@ -48,7 +48,7 @@ const translations = {
     creationDate: "Creation Date",
   },
   es: {
-    title: "Lista de Tareas Avanzada",
+    title: "Lista de Tareas",
     newProjectPlaceholder: "Nombre del nuevo proyecto",
     addProject: "Agregar Proyecto",
     deleteProject: "Eliminar Proyecto",
