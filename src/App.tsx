@@ -77,7 +77,7 @@ const translations = {
 export default function Component() {
   const [title, setTitle] = useState<string>("")
   const [tasks, setTasks] = useState<Task[]>([])
-  const [filter, setFilter] = useState<"all" | "completed" | "active">("active")
+  const [filter, _] = useState<"all" | "completed" | "active">("active")
   const [projects, setProjects] = useState<Project[]>([{ id: 1, name: "Default Project" }])
   const [currentProject, setCurrentProject] = useState<number>(1)
   const [newProjectName, setNewProjectName] = useState<string>("")
