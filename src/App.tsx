@@ -77,12 +77,13 @@ const translations = {
 export default function Component() {
   const [title, setTitle] = useState<string>("")
   const [tasks, setTasks] = useState<Task[]>([])
-  const [filter, _] = useState<"all" | "completed" | "active">("active")
+  const [filter, setFilter] = useState<"all" | "completed" | "active">("active")
   const [projects, setProjects] = useState<Project[]>([{ id: 1, name: "Default Project" }])
   const [currentProject, setCurrentProject] = useState<number>(1)
   const [newProjectName, setNewProjectName] = useState<string>("")
   const [language, setLanguage] = useState<"en" | "es">("en")
   const [sortMethod, setSortMethod] = useState<SortMethod>("creationDate")
+  const [newProjectId, setNewProjectId] = useState<number | null>(null)
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks")
@@ -139,7 +140,11 @@ export default function Component() {
       }
       setProjects((prevProjects) => [...prevProjects, newProject])
       setCurrentProject(newProject.id)
+      setNewProjectId(newProject.id)
       setNewProjectName("")
+    
+      // Reset the highlight effect after 2 seconds
+      setTimeout(() => setNewProjectId(null), 2000)
     }
   }
 
@@ -200,7 +205,7 @@ export default function Component() {
           </div>
           <div className="flex flex-col md:flex-row gap-2">
             <Select value={currentProject.toString()} onValueChange={(value) => setCurrentProject(Number(value))}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className={`w-full ${newProjectId === currentProject ? 'ring-2 ring-primary animate-pulse' : ''}`}>
                 <SelectValue placeholder={t.selectProject} />
               </SelectTrigger>
               <SelectContent>
@@ -255,7 +260,7 @@ export default function Component() {
           </div>
         </div>
 
-        <Tabs defaultValue="active" className="mb-6">
+        <Tabs value={filter} onValueChange={(value) => setFilter(value as "all" | "completed" | "active")} className="mb-6">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="all">{t.all}</TabsTrigger>
             <TabsTrigger value="active">{t.active}</TabsTrigger>
