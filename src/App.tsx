@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -5,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Toast, ToastProvider } from "@/components/ui/toast"
+import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "./hooks/use-toast"
 
 interface Task {
@@ -195,113 +197,111 @@ export default function Component() {
   const t = translations[language]
 
   return (
-    <ToastProvider>
-      <div className="p-4 max-w-4xl mx-auto">
-        <Card className="p-6 shadow-lg">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-center mb-4">{t.title}</h1>
-            <div className="flex justify-center">
-              <Button onClick={() => setLanguage(language === "en" ? "es" : "en")}>
-                {t.toggleLanguage}
-              </Button>
-            </div>
+    <div className="p-4 max-w-4xl mx-auto">
+      <Card className="p-6 shadow-lg">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-center mb-4">{t.title}</h1>
+          <div className="flex justify-center">
+            <Button onClick={() => setLanguage(language === "en" ? "es" : "en")}>
+              {t.toggleLanguage}
+            </Button>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="space-y-2">
-              <Input 
-                value={newProjectName} 
-                onChange={(e) => setNewProjectName(e.target.value)} 
-                placeholder={t.newProjectPlaceholder} 
-              />
-              <Button onClick={handleAddProject} className="w-full">{t.addProject}</Button>
-            </div>
-            <div className="flex flex-col md:flex-row gap-2">
-              <Select value={currentProject.toString()} onValueChange={(value) => setCurrentProject(Number(value))}>
-                <SelectTrigger className={`w-full ${newProjectId === currentProject ? 'ring-2 ring-primary animate-pulse' : ''}`}>
-                  <SelectValue placeholder={t.selectProject} />
-                </SelectTrigger>
-                <SelectContent>
-                  {projects.map((project) => (
-                    <SelectItem key={project.id} value={project.id.toString()}>
-                      {project.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="destructive" className="w-full md:w-auto">{t.deleteProject}</Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>{t.confirmDeleteTitle}</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {t.confirmDeleteDescription}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>{t.cancelDelete}</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDeleteProject}>{t.confirmDelete}</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="space-y-2">
+            <Input 
+              value={newProjectName} 
+              onChange={(e) => setNewProjectName(e.target.value)} 
+              placeholder={t.newProjectPlaceholder} 
+            />
+            <Button onClick={handleAddProject} className="w-full">{t.addProject}</Button>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="space-y-2">
-              <Input 
-                value={title} 
-                onChange={(e) => setTitle(e.target.value)} 
-                placeholder={t.taskTitlePlaceholder} 
-              />
-              <Button onClick={handleAddTask} className="w-full">{t.addTask}</Button>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium whitespace-nowrap">{t.sortBy}</span>
-              <Select value={sortMethod} onValueChange={(value) => setSortMethod(value as SortMethod)}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t.sortBy} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="alphabetical">{t.alphabetical}</SelectItem>
-                  <SelectItem value="reverseAlphabetical">{t.reverseAlphabetical}</SelectItem>
-                  <SelectItem value="creationDate">{t.creationDate}</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="flex flex-col md:flex-row gap-2">
+            <Select value={currentProject.toString()} onValueChange={(value) => setCurrentProject(Number(value))}>
+              <SelectTrigger className={`w-full ${newProjectId === currentProject ? 'ring-2 ring-primary animate-pulse' : ''}`}>
+                <SelectValue placeholder={t.selectProject} />
+              </SelectTrigger>
+              <SelectContent>
+                {projects.map((project) => (
+                  <SelectItem key={project.id} value={project.id.toString()}>
+                    {project.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="w-full md:w-auto">{t.deleteProject}</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t.confirmDeleteTitle}</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t.confirmDeleteDescription}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t.cancelDelete}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeleteProject}>{t.confirmDelete}</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
+        </div>
 
-          <Tabs value={filter} onValueChange={(value) => setFilter(value as "all" | "completed" | "active")} className="mb-6">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="all">{t.all}</TabsTrigger>
-              <TabsTrigger value="active">{t.active}</TabsTrigger>
-              <TabsTrigger value="completed">{t.completed}</TabsTrigger>
-            </TabsList>
-            <TabsContent value="all">
-              <TaskList tasks={filteredTasks} handleToggleComplete={handleToggleComplete} t={t} />
-            </TabsContent>
-            <TabsContent value="active">
-              <TaskList tasks={filteredTasks.filter(task => !task.completed)} handleToggleComplete={handleToggleComplete} t={t} />
-            </TabsContent>
-            <TabsContent value="completed">
-              <TaskList tasks={filteredTasks.filter(task => task.completed)} handleToggleComplete={handleToggleComplete} t={t} />
-            </TabsContent>
-          </Tabs>
-
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p>{activeTasksCount} {t.tasksLeft}</p>
-            {tasks.some((task) => task.completed && task.projectId === currentProject) && (
-              <Button onClick={handleDeleteCompleted} variant="outline">
-                {t.deleteCompleted}
-              </Button>
-            )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="space-y-2">
+            <Input 
+              value={title} 
+              onChange={(e) => setTitle(e.target.value)} 
+              placeholder={t.taskTitlePlaceholder} 
+            />
+            <Button onClick={handleAddTask} className="w-full">{t.addTask}</Button>
           </div>
-        </Card>
-        <Toast />
-      </div>
-    </ToastProvider>
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium whitespace-nowrap">{t.sortBy}</span>
+            <Select value={sortMethod} onValueChange={(value) => setSortMethod(value as SortMethod)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder={t.sortBy} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="alphabetical">{t.alphabetical}</SelectItem>
+                <SelectItem value="reverseAlphabetical">{t.reverseAlphabetical}</SelectItem>
+                <SelectItem value="creationDate">{t.creationDate}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        <Tabs value={filter} onValueChange={(value) => setFilter(value as "all" | "completed" | "active")} className="mb-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="all">{t.all}</TabsTrigger>
+            <TabsTrigger value="active">{t.active}</TabsTrigger>
+            <TabsTrigger value="completed">{t.completed}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="all">
+            <TaskList tasks={filteredTasks} handleToggleComplete={handleToggleComplete} t={t} />
+          </TabsContent>
+          <TabsContent value="active">
+            <TaskList tasks={filteredTasks.filter(task => !task.completed)} handleToggleComplete={handleToggleComplete} t={t} />
+          </TabsContent>
+          <TabsContent value="completed">
+            <TaskList tasks={filteredTasks.filter(task => task.completed)} handleToggleComplete={handleToggleComplete} t={t} />
+          </TabsContent>
+        </Tabs>
+
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <p>{activeTasksCount} {t.tasksLeft}</p>
+          {tasks.some((task) => task.completed && task.projectId === currentProject) && (
+            <Button onClick={handleDeleteCompleted} variant="outline">
+              {t.deleteCompleted}
+            </Button>
+          )}
+        </div>
+      </Card>
+      <Toaster />
+    </div>
   )
 }
 
