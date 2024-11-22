@@ -29,8 +29,8 @@ La aplicación está desplegada y puedes verla en:
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/aliagaaaaaa/todo.git
-cd tu-repositorio
+git clone https://github.com/aliagaaaaaa/to-do-list.git
+cd to-do-list
 ```
 
 ### 2. Instalar dependencias
